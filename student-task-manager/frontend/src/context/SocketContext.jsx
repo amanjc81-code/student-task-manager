@@ -5,6 +5,8 @@ const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
 
+const SOCKET_URL = import.meta.env.PROD ? '/' : 'http://localhost:5000';
+
 export const SocketProvider = ({ children }) => {
   const socketRef = useRef(null);
 
@@ -12,7 +14,7 @@ export const SocketProvider = ({ children }) => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user?.token) return;
 
-    const s = io('http://localhost:5000', {
+    const s = io(SOCKET_URL, {
       auth: { token: user.token },
       transports: ['websocket', 'polling'],
     });
